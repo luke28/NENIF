@@ -60,7 +60,7 @@ def main():
         os.symlink(out_path, os.path.join(RES_PATH, "MultiRes"))
     except OSError:
         os.remove(os.path.join(RES_PATH, "MultiRes"))
-        os.symlink(file_path, os.path.join(RES_PATH, "MultiRes"))
+        os.symlink(out_path, os.path.join(RES_PATH, "MultiRes"))
 
 if __name__ == "__main__":
     main()
