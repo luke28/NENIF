@@ -1,0 +1,46 @@
+{
+    "data_file": "casecades256_sorted",
+    "ground_truth_file": "network256",
+    "num_node": 256,
+    "models":[
+        {
+            "model_name" : "model",
+            "iteration": 3001,
+            "T":{
+                "start": 0.01,
+                "end": 0.1,
+                "step": 0.01
+            },
+            "K":{
+                "range": [10.0, 20.0, 40.0, 100.0]
+            },
+            "batch_size":{
+                "range": [128]
+            },
+            "learn_rate":{
+                "range": [0.001, 0.003, 0.1]
+            },
+            "layer_size":{
+                "start": 10,
+                "end": 100,
+                "step": 30
+            },
+            "embedding_size":{
+                "start": 10,
+                "end": 50,
+                "step":10
+            }
+        }
+    ],
+    "metric_function":[
+        {
+            "func": "coefficient",
+            "threshold": 0.2
+        },
+        {
+            "func": "knn",
+            "K": 80,
+            "dis_threshold": 5   
+        }
+    ]
+}

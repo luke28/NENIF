@@ -10,9 +10,9 @@ import networkx as nx
 import tensorflow as tf
 from operator import itemgetter
 
-from env import *
-from data_handler import DataHandler as dh
-from metric import Metric
+from utils.env import *
+from utils.data_handler import DataHandler as dh
+from utils.metric import Metric
 
 FILE_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -54,8 +54,10 @@ def train_model(params, is_save = True):
 
 def metric(params):
     G_truth = dh.load_ground_truth(os.path.join(DATA_PATH, params["ground_truth_file"]))
+    ret = []
     for metric in params["metric_function"]:
-        getattr(Metric, metric["func"])(G_truth, metric)
+        ret.append(getattr(Metric, metric["func"])(G_truth, metric))
+    return ret
 
 
 def main():
@@ -66,7 +68,7 @@ def main():
     parser.add_argument('--iteration', type = int, default = 10001)
     parser.add_argument('--model', type = str, default = "model")
     args = parser.parse_args()
-    params = dh.load_json_file(os.path.join(CONF_PATH, args.conf + ".json"))
+    params = dh.load_json_file(os.path.join(SINGLE_CONF_PATH, args.conf + ".json"))
     params["iteration"] = args.iteration
 
     module = __import__(args.model).NodeSkipGram

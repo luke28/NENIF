@@ -28,6 +28,11 @@ class DataHandler(object):
         return json.loads(s)
 
     @staticmethod
+    def append_to_file(file_path, s):
+        with open(file_path, "a") as f:
+            a.write(s)
+
+    @staticmethod
     def load_ground_truth(file_path):
         G = nx.DiGraph()
         with open(file_path, "r") as f:
