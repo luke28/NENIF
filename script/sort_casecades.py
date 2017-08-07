@@ -2,7 +2,7 @@ import os
 import sys
 
 a = []
-with open('../data/-cascades256.txt', "r") as f:
+with open('../data/cascades256.txt', "r") as f:
     for line in f:
         line = line.strip();
         if len(line) == 0:
