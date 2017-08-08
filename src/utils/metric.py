@@ -4,6 +4,8 @@ import time
 import networkx as nx
 import json
 import numpy as np
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
 from operator import itemgetter
 
 from env import *
@@ -16,7 +18,10 @@ class Metric(object):
 	res["acc"] = float(TP + TN) / float(TP + FP + FN + TN)
 	res["precision"] = float(TP) / float(TP + FP) if TP + FP > 0 else 1.0
 	res["recall"] = float(TP) / float(TP + FN) if TP + FN > 0 else 1.0
-	res["F1"] = 1.0 / (1.0 / res["recall"] + 1.0 / res["precision"])
+        try:
+	    res["F1"] = 1.0 / (1.0 / res["recall"] + 1.0 / res["precision"])
+        except ZeroDivisionError:
+            res["F1"] = 0.0
 	return res
 
     @staticmethod
@@ -68,3 +73,24 @@ class Metric(object):
         print "coefficient metric:"
         print res
         return res
+
+    @staticmethod
+    def draw_pr(precision, recall, file_name = "pr.png"):
+	index = np.array(range(len(precision)))
+        width = 0.3
+        tmplist1 = [(x, precision[x]) for x in precision]
+        tmplist2 = [(x, recall[x]) for x in recall]
+        tmplist1.sort()
+        tmplist2.sort()
+        X = [x[0] for x in tmplist1]
+        y1 = [x[1] for x in tmplist1]
+        y2 = [x[1] for x in tmplist2]
+        plt.bar(index - width / 2, y2, width, color = "blue", label="recall")
+        plt.bar(index + width / 2, y1, width, color = "red", label="precision")
+        plt.grid(True, which='major')
+        plt.grid(True, which='minor')
+        plt.xticks(index, X, rotation = 45, size = 'small')
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.1), fancybox=True, ncol=5)
+
+        plt.savefig(file_name)
+        plt.close()

@@ -17,7 +17,7 @@ from utils.metric import Metric
 FILE_PATH = os.path.dirname(os.path.abspath(__file__))
 
 def train_model(params, is_save = True):
-    data_set = dh.load_casecades(os.path.join(DATA_PATH, params["data_file"]))
+    data_set = dh.load_cascades(os.path.join(DATA_PATH, params["data_file"]))
     var_list = [0, 0]
     def get_batch(batch_size):
         batch_x = []

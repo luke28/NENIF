@@ -6,7 +6,7 @@ import json
 
 class DataHandler(object):
     @staticmethod
-    def load_casecades(file_path):
+    def load_cascades(file_path):
         data_set = []
         with open(file_path, "r") as f:
             for line in f:

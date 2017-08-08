@@ -1,0 +1,22 @@
+{
+    "data_file": "casecades256_sorted",
+    "ground_truth_file": "network256",
+    "num_node": 256,
+    "T": 0.048,
+    "K": 1,
+    "batch_size": 128,
+    "learn_rate": 0.001,
+    "layer_size": 500,
+    "embedding_size": 50,
+    "metric_function":[
+        {
+            "func": "coefficient",
+            "threshold": 0.2
+        },
+        {
+            "func": "knn",
+            "K": 5,
+            "dis_threshold": 5   
+        }
+    ]
+}
