@@ -10,6 +10,7 @@ import networkx as nx
 import tensorflow as tf
 from operator import itemgetter
 
+from batch_strategy import BatchStrategy
 from utils.env import *
 from utils.data_handler import DataHandler as dh
 from utils.metric import Metric
@@ -17,30 +18,10 @@ from utils.metric import Metric
 FILE_PATH = os.path.dirname(os.path.abspath(__file__))
 
 def train_model(params, is_save = True):
-    data_set = dh.load_cascades(os.path.join(DATA_PATH, params["data_file"]))
-    var_list = [0, 0]
-    def get_batch(batch_size):
-        batch_x = []
-        batch_y = []
-        for _ in xrange(batch_size):
-            y = np.zeros(params["num_node"])
-            for i in xrange(var_list[1], -1, -1):
-                delta = data_set[var_list[0]][var_list[1]][1] - data_set[var_list[0]][i][1]
-                if delta > params["T"]:
-                    break
-                y[data_set[var_list[0]][i][0]] = math.exp(
-                        -params["K"] * delta)
-            batch_y.append(y)
-            batch_x.append([data_set[var_list[0]][var_list[1]][0]])
-            var_list[1] += 1
-            if var_list[1] == len(data_set[var_list[0]]):
-                var_list[1] = 0
-                var_list[0] = (var_list[0]+ 1) % len(data_set)
-        return batch_x, batch_y
-
-    nkg = params["model"](params)
-    embeddings, coefficient = nkg.Train(get_batch,
-                                        epoch_num = params["iteration"])
+    bs = BatchStrategy(params)
+    module = __import__(params["model"]).NodeSkipGram
+    nkg = module(params)
+    embeddings, coefficient = nkg.Train(getattr(bs, params["batch_func"]), epoch_num = params["iteration"])
     if is_save:
         d = {"embeddings": embeddings.tolist(), "coefficient": coefficient.tolist()}
         file_path = os.path.join(RES_PATH, "training_res_" + str(int(time.time() * 1000.0)))
@@ -70,9 +51,7 @@ def main():
     args = parser.parse_args()
     params = dh.load_json_file(os.path.join(SINGLE_CONF_PATH, args.conf + ".json"))
     params["iteration"] = args.iteration
-
-    module = __import__(args.model).NodeSkipGram
-    params["model"] = module
+    params["model"] = args.model
 
     if args.operation == "all":
         train_model(params)

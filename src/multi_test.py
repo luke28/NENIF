@@ -49,10 +49,15 @@ def main():
             continue
         single_params[item[0]] = item[1]
     for m in params["models"]:
-        single_params["model"] = __import__(
-                m["model_name"]).NodeSkipGram
-        single_params["iteration"] = m["iteration"]
-        tmp = [item for item in m.items() if item[0] != "model_name" and item[0] != "iteration"]
+        for it in m.items():
+            if it[0] == "traversal":
+                continue
+            else:
+                single_params[it[0]] = it[1]
+        if "traversal" not in m:
+            tmp = []
+        else:
+            tmp = [item for item in m["traversal"].items()]
         with open(out_path, "a") as f:
             dfs(tmp, single_params, f)
 

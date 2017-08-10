@@ -1,9 +1,10 @@
 {
-    "data_file": "casecades256_sorted",
+    "data_file": "cascades256_sorted",
     "ground_truth_file": "network256",
     "num_node": 256,
     "T": 0.048,
-    "K": 40.0,
+    "K": 1.0,
+    "batch_func": "sequential_avg",
     "batch_size": 128,
     "learn_rate": 0.001,
     "layer_size": 500,
@@ -11,11 +12,11 @@
     "metric_function":[
         {
             "func": "coefficient",
-            "threshold": 0.2
+            "threshold": 5.0
         },
         {
             "func": "knn",
-            "K": 80,
+            "K": 1,
             "dis_threshold": 5   
         }
     ]

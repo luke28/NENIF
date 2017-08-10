@@ -3,6 +3,9 @@ import sys
 import networkx as nx
 import re
 import json
+import numpy as np
+import math
+
 
 class DataHandler(object):
     @staticmethod
@@ -43,3 +46,25 @@ class DataHandler(object):
                 items = line.split(",")
                 G.add_edge(int(items[0]), int(items[1]))
         return G
+
+    @staticmethod
+    def cal_average_delta(data_set,
+                        num_of_nodes,
+                        K = 1.0,
+                        T = float('inf')):
+        n = num_of_nodes
+        res = np.zeros((n, n), dtype = float)
+        cnt = np.zeros(n, dtype = float)
+        for data in data_set:
+            for i in xrange(len(data)):
+                for j in xrange(i, len(data)):
+                    if data[i][1] - data[j][1] > T:
+                        break
+                    else:
+                        res[data[i][0]][data[j][0]] += math.exp(K * (data[i][1] - data[j][1]))
+                cnt[data[i][0]] += 1.0
+        for i in xrange(n):
+            for j in xrange(n):
+                res[i][j] /= float(cnt[i])
+        return res
+
