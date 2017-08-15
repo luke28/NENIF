@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(FILE_PATH, '../src'))
 from utils.data_handler import DataHandler as dh
 from utils.metric import Metric
 
-data_set = dh.load_cascades(os.path.join(FILE_PATH, r"../data/casecades256_sorted"))
+data_set = dh.load_cascades(os.path.join(FILE_PATH, r"../data/cascades256_sorted"))
 n = 256
 res = np.zeros((n, n), dtype = float)
 cnt = np.zeros(n, dtype = float)

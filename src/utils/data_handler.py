@@ -65,6 +65,9 @@ class DataHandler(object):
                 cnt[data[i][0]] += 1.0
         for i in xrange(n):
             for j in xrange(n):
-                res[i][j] /= float(cnt[i])
+                if cnt[i] < 0.9:
+                    res[i][j] = 0.0
+                else:
+                    res[i][j] /= cnt[i]
         return res
 

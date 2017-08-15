@@ -47,7 +47,7 @@ def main():
     parser.add_argument('--operation', type = str, default = "all", help = "[all | train | metric | draw]")
     parser.add_argument('--conf', type = str, default = "default")
     parser.add_argument('--iteration', type = int, default = 10001)
-    parser.add_argument('--model', type = str, default = "model")
+    parser.add_argument('--model', type = str, default = "model_simple")
     args = parser.parse_args()
     params = dh.load_json_file(os.path.join(SINGLE_CONF_PATH, args.conf + ".json"))
     params["iteration"] = args.iteration

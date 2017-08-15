@@ -1,0 +1,46 @@
+{
+    "data_file": "cascades256_sorted",
+    "ground_truth_file": "network256",
+    "num_node": 256,
+    "models":[
+        {
+            "iteration": 3001,
+            "T": 0.1,
+            "K": 1,
+            "batch_size": 128,
+            "traversal":
+            {
+                "model":{
+                    "range": ["model", "model_simple"]
+                },
+                "batch_func":{
+                    "range": ["sequential_avg", "sequential_origin"]
+                },
+                "learn_rate":{
+                    "range": [0.01]
+                },
+                "layer_size":{
+                    "start": 10,
+                    "end": 30,
+                    "step": 30
+                },
+                "embedding_size":{
+                    "start": 10,
+                    "end": 50,
+                    "step":40
+                }
+            }
+        }
+    ],
+    "metric_function":[
+        {
+            "func": "coefficient",
+            "threshold": 0.2
+        },
+        {
+            "func": "knn",
+            "K": 80,
+            "dis_threshold": 5   
+        }
+    ]
+}
